@@ -93,7 +93,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2120, 524.0]
+    coordinate: [2168, 380.0]
     rotation: 0
     state: enabled
 - name: blocks_char_to_float_0
@@ -110,7 +110,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 444.0]
+    coordinate: [1160, 300.0]
     rotation: 0
     state: true
 - name: blocks_file_sink_0
@@ -128,7 +128,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 684.0]
+    coordinate: [1432, 540.0]
     rotation: 0
     state: disabled
 - name: blocks_file_sink_1
@@ -146,23 +146,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 700.0]
+    coordinate: [1160, 556.0]
     rotation: 0
     state: true
-- name: blocks_message_debug_1
-  id: blocks_message_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    en_uvec: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2752, 912.0]
-    rotation: 0
-    state: disabled
 - name: blocks_message_strobe_0
   id: blocks_message_strobe
   parameters:
@@ -181,78 +167,6 @@ blocks:
     coordinate: [152, 148.0]
     rotation: 0
     state: true
-- name: blocks_pack_k_bits_bb_0
-  id: blocks_pack_k_bits_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    k: '8'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1088, 300.0]
-    rotation: 0
-    state: true
-- name: blocks_pack_k_bits_bb_0_0
-  id: blocks_pack_k_bits_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    k: '8'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1728, 908.0]
-    rotation: 0
-    state: disabled
-- name: blocks_stream_to_tagged_stream_0
-  id: blocks_stream_to_tagged_stream
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: 'NOTE: length depends on CSP message length
-
-      (set manually for now)'
-    len_tag_key: '"packet_len"'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    packet_len: '42'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1896, 900.0]
-    rotation: 0
-    state: disabled
-- name: blocks_stream_to_tagged_stream_1
-  id: blocks_stream_to_tagged_stream
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    len_tag_key: '"packet_len"'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    packet_len: '42'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1216, 292.0]
-    rotation: 0
-    state: true
 - name: blocks_stream_to_tagged_stream_2
   id: blocks_stream_to_tagged_stream
   parameters:
@@ -269,45 +183,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1624, 612.0]
-    rotation: 0
-    state: true
-- name: blocks_tag_gate_0
-  id: blocks_tag_gate
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    propagate_tags: 'False'
-    single_key: '""'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1544, 900.0]
-    rotation: 0
-    state: disabled
-- name: blocks_tag_gate_1
-  id: blocks_tag_gate
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    propagate_tags: 'False'
-    single_key: '""'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [920, 292.0]
+    coordinate: [1616, 468.0]
     rotation: 0
     state: true
 - name: blocks_tag_gate_2
@@ -326,65 +202,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 612.0]
-    rotation: 0
-    state: true
-- name: blocks_unpack_k_bits_bb_0
-  id: blocks_unpack_k_bits_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    k: '8'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [512, 300.0]
-    rotation: 0
-    state: true
-- name: digital_additive_scrambler_bb_0
-  id: digital_additive_scrambler_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    bits_per_byte: '1'
-    comment: ''
-    count: '0'
-    len: '7'
-    mask: '0xa9'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    reset_tag_key: packet_len
-    seed: '0xff'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1320, 868.0]
-    rotation: 0
-    state: disabled
-- name: digital_additive_scrambler_bb_1
-  id: digital_additive_scrambler_bb
-  parameters:
-    affinity: ''
-    alias: ''
-    bits_per_byte: '1'
-    comment: scramble the signal
-    count: '0'
-    len: '7'
-    mask: '0xa9'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    reset_tag_key: '"packet_len"'
-    seed: '0xff'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [720, 260.0]
+    coordinate: [1432, 468.0]
     rotation: 0
     state: true
 - name: digital_burst_shaper_xx_1
@@ -405,7 +223,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 588.0]
+    coordinate: [1880, 444.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -426,7 +244,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 596.0]
+    coordinate: [1160, 452.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -489,90 +307,62 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 448.0]
+    coordinate: [408, 304.0]
     rotation: 0
     state: enabled
-- name: epy_block_0_0
+- name: epy_block_0_1
   id: epy_block
   parameters:
     _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
       \ GRC will instantiate the first class it finds\nto get ports and parameters\
       \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nfrom gnuradio import\
-      \ gr\nimport numpy as np\nimport pmt\n \nclass msg_block(gr.basic_block):\n\
-      \    '''\n    Remove stuffed bits from a message i.e, the bits followed by \n\
-      \    five consequitive ones. \n    '''\n    def __init__(self):\n        gr.basic_block.__init__(\n\
-      \            self,\n            name=\"Bit de-stuffer\",\n            in_sig=None,\n\
-      \            out_sig=None)\n\n\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
-      \        self.message_port_register_out(pmt.intern('pdu_out'))\n        self.set_msg_handler(pmt.intern('msg_in'),\
-      \ self.handle_msg)\n\n    def handle_msg(self, msg):\n        #Get bitstream\
-      \ from message\n        bitstream = np.array(pmt.to_python(msg)) \n        \n\
-      \n        \"\"\"Remove one bit preceded by five consequitive ones\"\"\"\n  \
-      \      compare_array = np.array([1,1,1,1,1])\n\n\n        for i in range(len(bitstream)-5):\n\
-      \            if np.array_equal(bitstream[i:i+5],compare_array):\n          \
-      \      #Mark stuffed bits such that they can be removed later\n            \
-      \    #If they are removed now, the for loop will delete all\n              \
-      \  #consequtive bits if 1111101 is received\n                bitstream[i+5]\
-      \ = 2\n\n\n        bitstream_destuffed = np.delete(bitstream, np.where(bitstream\
-      \ == 2))\n\n        #Convert destuffed frame to PMT\n        outgoing_msg =\
-      \ pmt.init_u8vector(len(bitstream_destuffed),(bitstream_destuffed))\n      \
-      \  pdu = pmt.cons(pmt.make_dict(), outgoing_msg)\n\n        self.message_port_pub(pmt.intern('pdu_out'),\
-      \ pdu)"
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"\n    This\
+      \ block srcrambles an input PDU consisting of unpacked bytes.\n    The Additive\
+      \ scrambling is compliant with the 255-bit pseudo-randomizer\n    desribed in\
+      \ section 10 in CCSDS 131.0-B-5 (TM Blue Book)\n\n    Note: as the scrambler\
+      \ is additive, applying it twice will return\n    the original message. \n\n\
+      \    PDU_in:  unpacked bits\n    PDU_out: scrambled unpacked bits\n    \"\"\"\
+      \n\n    def __init__(self):  # only default arguments here\n        \"\"\"arguments\
+      \ to this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='CCSDS Additive Scrambler',   # will show\
+      \ up in GRC\n            in_sig=None,\n            out_sig=None\n        )\n\
+      \n        self.pn_lut = np.zeros(255, dtype=np.uint8)\n        self.generate_pn_lut()\n\
+      \n        self.message_port_register_in(pmt.intern('PDU_in'))\n        self.message_port_register_out(pmt.intern('PDU_out'))\n\
+      \        self.set_msg_handler(pmt.intern('PDU_in'), self.handle_msg)\n\n\n \
+      \   def handle_msg(self, msg):\n        bitstream = np.array(pmt.to_python(pmt.cdr(msg)))\n\
+      \        scr_bitstream = np.zeros(len(bitstream), dtype=np.uint8) \n       \
+      \ for i in range(len(bitstream)):\n            scr_bitstream[i] = np.uint8(bitstream[i])\
+      \ ^ np.uint8(self.pn_lut[i%255])\n\n        #Convert the scrambled bitstream\
+      \ to PDU\n        outgoing_msg = pmt.init_u8vector(len(scr_bitstream),(scr_bitstream))\n\
+      \        pdu = pmt.cons(pmt.make_dict(), outgoing_msg)\n\n        self.message_port_pub(pmt.intern('PDU_out'),\
+      \ pdu)\n    \n    def generate_pn_lut(self):\n\n        #Define shift register\n\
+      \        sr = 0b11111111\n        \n        #Update shift register\n       \
+      \ for i in range(255):\n            self.pn_lut[i] = sr & 1\n            nb\
+      \ = self.pn_xor(sr)\n            sr = sr >> 1\n            sr = sr | (nb <<\
+      \ 7)\n            \n            \n    def pn_xor(self, sr):\n        return\
+      \ (((sr & 0b01) >> 0) ^ ((sr & 0b00001000) >> 3) ^ ((sr & 0b00100000) >> 5)\
+      \ ^ ((sr & 0b10000000) >> 7)) & 1\n"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Bit de-stuffer', 'msg_block', [], [('msg_in', 'message', 1)], [('pdu_out',
-      'message', 1)], '\n    Remove stuffed bits from a message i.e, the bits followed
-      by \n    five consequitive ones. \n    ', [])
+    _io_cache: '(''CCSDS Additive Scrambler'', ''blk'', [], [(''PDU_in'', ''message'',
+      1)], [(''PDU_out'', ''message'', 1)], ''\n    This block srcrambles an input
+      PDU consisting of unpacked bytes.\n    The Additive scrambling is compliant
+      with the 255-bit pseudo-randomizer\n    desribed in section 10 in CCSDS 131.0-B-5
+      (TM Blue Book)\n\n    Note: as the scrambler is additive, applying it twice
+      will return\n    the original message. \n\n    PDU_in:  unpacked bits\n    PDU_out:
+      scrambled unpacked bits\n    '', [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 912.0]
+    coordinate: [992, 160.0]
     rotation: 0
-    state: disabled
-- name: epy_block_1
-  id: epy_block
-  parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nfrom gnuradio import\
-      \ gr\nimport numpy as np\nimport pmt\n \nclass msg_block(gr.basic_block):\n\
-      \    '''\n    Gets a message with the front HDLC flag removed by the\n    'sync\
-      \ and create PDU block' and this block then removes\n    the last HDLC flag\
-      \ and sends the prior bitstream\n    '''\n    def __init__(self):\n        gr.basic_block.__init__(\n\
-      \            self,\n            name=\"HDLC Deframer\",\n            in_sig=None,\n\
-      \            out_sig=None)\n\n\n        self.message_port_register_in(pmt.intern('msg_in'))\n\
-      \        self.message_port_register_out(pmt.intern('msg_out'))\n        self.set_msg_handler(pmt.intern('msg_in'),\
-      \ self.handle_msg)\n\n    def handle_msg(self, msg):\n        #Get bitstream\
-      \ from message\n        bitstream = np.array(pmt.to_python(pmt.cdr(msg))) \n\
-      \n\n        hdlc_flag = np.array([0,1,1,1,1,1,1,0])\n        hdlc_index = 0\n\
-      \        \n        #Find HDLC in bitstream\n        for i in range(len(bitstream)-len(hdlc_flag)):\n\
-      \            bitstream_snippet = bitstream[i:i+len(hdlc_flag)]\n           \
-      \ if (np.array_equal(bitstream_snippet,hdlc_flag)):\n                hdlc_index\
-      \ = i\n                break\n        \n        #localize HDLC frame\n     \
-      \   hdlc_frame = bitstream[0:hdlc_index]\n\n\n        #Convert HDLC frame to\
-      \ PMT\n        outgoing_msg = pmt.to_pmt(hdlc_frame)\n\n        self.message_port_pub(pmt.intern('msg_out'),\
-      \ outgoing_msg)"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    _io_cache: ('HDLC Deframer', 'msg_block', [], [('msg_in', 'message', 1)], [('msg_out',
-      'message', 1)], "\n    Gets a message with the front HDLC flag removed by the\n    'sync
-      and create PDU block' and this block then removes\n    the last HDLC flag and
-      sends the prior bitstream\n    ", [])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [616, 912.0]
-    rotation: 0
-    state: disabled
+    state: true
 - name: epy_block_2
   id: epy_block
   parameters:
@@ -621,47 +411,80 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 448.0]
+    coordinate: [616, 304.0]
     rotation: 0
     state: true
-- name: pdu_pdu_to_tagged_stream_0
-  id: pdu_pdu_to_tagged_stream
+- name: epy_block_2_0
+  id: epy_block
   parameters:
-    affinity: ''
-    alias: ''
-    comment: 'Convert back to byte stream
-
-      in order to use the additive scrambler
-
-      block'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    tag: packet_len
-    type: byte
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [280, 300.0]
-    rotation: 0
-    state: true
-- name: pdu_pdu_to_tagged_stream_0_0
-  id: pdu_pdu_to_tagged_stream
-  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"\n    PDU_in:\
+      \ 1,0,1,0,1,0,1,0 (ex)\n    PDU_out: 0xAA\n    \"\"\"\n\n    def __init__(self):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='Pack 8 bits',   # will show up in GRC\n       \
+      \     in_sig=None,\n            out_sig=None\n        )\n        \n        self.message_port_register_in(pmt.intern('PDU_in'))\n\
+      \        self.message_port_register_out(pmt.intern('PDU_out'))\n        self.set_msg_handler(pmt.intern('PDU_in'),\
+      \ self.handle_msg)\n\n\n    def handle_msg(self, msg):\n        bitstream =\
+      \ np.array(pmt.to_python(pmt.cdr(msg)))\n        bytestream = np.packbits(bitstream)\n\
+      \n\n        #Convert the bytestream to PDU\n        outgoing_msg = pmt.init_u8vector(len(bytestream),(bytestream))\n\
+      \        pdu = pmt.cons(pmt.make_dict(), outgoing_msg)\n\n        self.message_port_pub(pmt.intern('PDU_out'),\
+      \ pdu)"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    tag: packet_len
-    type: byte
   states:
+    _io_cache: '(''Pack 8 bits'', ''blk'', [], [(''PDU_in'', ''message'', 1)], [(''PDU_out'',
+      ''message'', 1)], ''\n    PDU_in: 1,0,1,0,1,0,1,0 (ex)\n    PDU_out: 0xAA\n    '',
+      [])'
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1080, 908.0]
+    coordinate: [1288, 160.0]
     rotation: 0
-    state: disabled
+    state: true
+- name: epy_block_3
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"\n    PDU_in:\
+      \ 0xAE (ex.)\n    PDU_out: 1,0,1,0,1,1,1,0\n    \"\"\"\n\n    def __init__(self):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='Unpack 8 bits',   # will show up in GRC\n     \
+      \       in_sig=None,\n            out_sig=None\n        )\n        \n      \
+      \  self.message_port_register_in(pmt.intern('PDU_in'))\n        self.message_port_register_out(pmt.intern('PDU_out'))\n\
+      \        self.set_msg_handler(pmt.intern('PDU_in'), self.handle_msg)\n\n\n \
+      \   def handle_msg(self, msg):\n        bytestream = np.array(pmt.to_python(pmt.cdr(msg)))\
+      \ \n        bitstream = np.unpackbits(bytestream)\n\n        #Convert the bytestream\
+      \ to PDU\n        outgoing_msg = pmt.init_u8vector(len(bitstream),(bitstream))\n\
+      \        pdu = pmt.cons(pmt.make_dict(), outgoing_msg)\n\n        self.message_port_pub(pmt.intern('PDU_out'),\
+      \ pdu)\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: '(''Unpack 8 bits'', ''blk'', [], [(''PDU_in'', ''message'', 1)], [(''PDU_out'',
+      ''message'', 1)], ''\n    PDU_in: 0xAE (ex.)\n    PDU_out: 1,0,1,0,1,1,1,0\n    '',
+      [])'
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [728, 160.0]
+    rotation: 0
+    state: enabled
 - name: pdu_pdu_to_tagged_stream_1
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -676,41 +499,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 444.0]
-    rotation: 0
-    state: true
-- name: pdu_tagged_stream_to_pdu_0_0
-  id: pdu_tagged_stream_to_pdu
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    tag: packet_len
-    type: byte
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2136, 908.0]
-    rotation: 0
-    state: disabled
-- name: pdu_tagged_stream_to_pdu_1
-  id: pdu_tagged_stream_to_pdu
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: Back to PDU
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    tag: packet_len
-    type: byte
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1432, 300.0]
+    coordinate: [880, 300.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
@@ -807,7 +596,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 428.0]
+    coordinate: [1336, 284.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_1
@@ -904,7 +693,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 764.0]
+    coordinate: [1432, 620.0]
     rotation: 0
     state: disabled
 - name: qtgui_waterfall_sink_x_0
@@ -965,26 +754,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1440, 524.0]
+    coordinate: [1432, 380.0]
     rotation: 0
     state: enabled
-- name: satellites_decode_rs_ccsds_0
-  id: satellites_decode_rs_ccsds
-  parameters:
-    affinity: ''
-    alias: ''
-    basis: 'False'
-    comment: ''
-    interleave: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2392, 900.0]
-    rotation: 0
-    state: disabled
 - name: satellites_encode_rs_ccsds_0
   id: satellites_encode_rs_ccsds
   parameters:
@@ -1002,37 +774,6 @@ blocks:
     coordinate: [432, 148.0]
     rotation: 0
     state: enabled
-- name: satellites_sync_to_pdu_0
-  id: satellites_sync_to_pdu
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    packlen: '400'
-    sync: '"0101010101010101010101010111111010101010"'
-    threshold: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [320, 892.0]
-    rotation: 0
-    state: disabled
-- name: virtual_sink_0
-  id: virtual_sink
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: RS_encoded
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [768, 156.0]
-    rotation: 0
-    state: true
 - name: virtual_sink_1
   id: virtual_sink
   parameters:
@@ -1043,7 +784,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1704, 300.0]
+    coordinate: [1496, 156.0]
     rotation: 0
     state: true
 - name: virtual_sink_2
@@ -1056,22 +797,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 540.0]
+    coordinate: [1160, 396.0]
     rotation: 0
     state: enabled
-- name: virtual_source_0
-  id: virtual_source
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: RS_encoded
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [56, 300.0]
-    rotation: 0
-    state: true
 - name: virtual_source_1
   id: virtual_source
   parameters:
@@ -1082,62 +810,32 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 444.0]
+    coordinate: [144, 300.0]
     rotation: 0
     state: true
-- name: virtual_source_2
-  id: virtual_source
-  parameters:
-    alias: ''
-    comment: 'This simulates perfectly received baseband
-
-      physical layer bits'
-    stream_id: transmitted_bits
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [56, 908.0]
-    rotation: 0
-    state: disabled
 
 connections:
 - [blocks_char_to_float_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_message_strobe_0, strobe, satellites_encode_rs_ccsds_0, in]
-- [blocks_pack_k_bits_bb_0, '0', blocks_stream_to_tagged_stream_1, '0']
-- [blocks_pack_k_bits_bb_0_0, '0', blocks_stream_to_tagged_stream_0, '0']
-- [blocks_stream_to_tagged_stream_0, '0', pdu_tagged_stream_to_pdu_0_0, '0']
-- [blocks_stream_to_tagged_stream_1, '0', pdu_tagged_stream_to_pdu_1, '0']
 - [blocks_stream_to_tagged_stream_2, '0', digital_burst_shaper_xx_1, '0']
-- [blocks_tag_gate_0, '0', blocks_pack_k_bits_bb_0_0, '0']
-- [blocks_tag_gate_1, '0', blocks_pack_k_bits_bb_0, '0']
 - [blocks_tag_gate_2, '0', blocks_stream_to_tagged_stream_2, '0']
-- [blocks_unpack_k_bits_bb_0, '0', digital_additive_scrambler_bb_1, '0']
-- [digital_additive_scrambler_bb_0, '0', blocks_tag_gate_0, '0']
-- [digital_additive_scrambler_bb_1, '0', blocks_tag_gate_1, '0']
 - [digital_burst_shaper_xx_1, '0', bladeRF_sink_0, '0']
 - [digital_gfsk_mod_0, '0', blocks_file_sink_0, '0']
 - [digital_gfsk_mod_0, '0', blocks_tag_gate_2, '0']
 - [digital_gfsk_mod_0, '0', qtgui_time_sink_x_1, '0']
 - [digital_gfsk_mod_0, '0', qtgui_waterfall_sink_x_0, '0']
 - [epy_block_0, PDU_out, epy_block_2, PDU_in]
-- [epy_block_0_0, pdu_out, pdu_pdu_to_tagged_stream_0_0, pdus]
-- [epy_block_1, msg_out, epy_block_0_0, msg_in]
+- [epy_block_0_1, PDU_out, epy_block_2_0, PDU_in]
 - [epy_block_2, PDU_out, pdu_pdu_to_tagged_stream_1, pdus]
-- [pdu_pdu_to_tagged_stream_0, '0', blocks_unpack_k_bits_bb_0, '0']
-- [pdu_pdu_to_tagged_stream_0_0, '0', digital_additive_scrambler_bb_0, '0']
+- [epy_block_2_0, PDU_out, virtual_sink_1, '0']
+- [epy_block_3, PDU_out, epy_block_0_1, PDU_in]
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_char_to_float_0, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_file_sink_1, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', digital_gfsk_mod_0, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', virtual_sink_2, '0']
-- [pdu_tagged_stream_to_pdu_0_0, pdus, satellites_decode_rs_ccsds_0, in]
-- [pdu_tagged_stream_to_pdu_1, pdus, virtual_sink_1, '0']
-- [satellites_decode_rs_ccsds_0, out, blocks_message_debug_1, print]
-- [satellites_encode_rs_ccsds_0, out, virtual_sink_0, '0']
-- [satellites_sync_to_pdu_0, out, epy_block_1, msg_in]
-- [virtual_source_0, '0', pdu_pdu_to_tagged_stream_0, pdus]
+- [satellites_encode_rs_ccsds_0, out, epy_block_3, PDU_in]
 - [virtual_source_1, '0', epy_block_0, PDU_in]
-- [virtual_source_2, '0', satellites_sync_to_pdu_0, '0']
 
 metadata:
   file_format: 1
+  grc_version: 3.10.7.0

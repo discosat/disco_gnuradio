@@ -32,7 +32,6 @@ import csp_rx_epy_block_0_0 as epy_block_0_0  # embedded python block
 import csp_rx_epy_block_0_1 as epy_block_0_1  # embedded python block
 import csp_rx_epy_block_1 as epy_block_1  # embedded python block
 import csp_rx_epy_block_2 as epy_block_2  # embedded python block
-import csp_rx_epy_block_3 as epy_block_3  # embedded python block
 import satellites
 import satellites.components.demodulators
 import satellites.hier
@@ -187,7 +186,6 @@ class csp_rx(gr.top_block, Qt.QWidget):
         self._qtgui_time_sink_x_1_win = sip.wrapinstance(self.qtgui_time_sink_x_1.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_1_win)
         self.freq_xlating_fir_filter_xxx_0 = filter.freq_xlating_fir_filter_ccc(100, firdes.complex_band_pass(1, samp_rate, -30e3, 30e3, 5e3), (-500e3), samp_rate)
-        self.epy_block_3 = epy_block_3.blk()
         self.epy_block_2 = epy_block_2.blk()
         self.epy_block_1 = epy_block_1.msg_block()
         self.epy_block_0_1 = epy_block_0_1.blk()
@@ -195,7 +193,6 @@ class csp_rx(gr.top_block, Qt.QWidget):
         self.digital_binary_slicer_fb_1 = digital.binary_slicer_fb()
         self.blocks_uchar_to_float_1 = blocks.uchar_to_float()
         self.blocks_message_debug_1 = blocks.message_debug(True, gr.log_levels.info)
-        self.blocks_message_debug_0 = blocks.message_debug(True, gr.log_levels.info)
         self.analog_simple_squelch_cc_0 = analog.simple_squelch_cc((-50), 1)
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(5)
         self.analog_agc_xx_0 = analog.agc_cc((1e-4), 1.0, 1, 65536)
@@ -207,7 +204,6 @@ class csp_rx(gr.top_block, Qt.QWidget):
         self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.epy_block_0_1, 'PDU_in'))
         self.msg_connect((self.epy_block_0_1, 'PDU_out'), (self.epy_block_2, 'PDU_in'))
         self.msg_connect((self.epy_block_1, 'msg_out'), (self.epy_block_0_0, 'msg_in'))
-        self.msg_connect((self.epy_block_2, 'PDU_out'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.epy_block_2, 'PDU_out'), (self.satellites_decode_rs_ccsds_0, 'in'))
         self.msg_connect((self.satellites_decode_rs_ccsds_0, 'out'), (self.blocks_message_debug_1, 'print'))
         self.msg_connect((self.satellites_sync_to_pdu_0, 'out'), (self.epy_block_1, 'msg_in'))
