@@ -8,6 +8,7 @@ Right now, the TX flowgraph transmits a CSP ping every five seconds, which can b
 
 ## Dependencies
 GNU Radio 3.10.x
+
 gr-satellites, url: https://github.com/daniestevez/gr-satellites (just pull the main branch)
 
 Note: most of the custom blocks are embedded python blocks, which means that no other out-of-tree modules (OOT) are nessescary. The source code for each block can be viewed and modified by opening the block in GRC.
