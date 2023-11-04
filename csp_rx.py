@@ -7,49 +7,40 @@
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
 # Author: thomas
-# GNU Radio version: 3.10.1.1
+# GNU Radio version: 3.10.7.0
 
 from packaging.version import Version as StrictVersion
-
-if __name__ == '__main__':
-    import ctypes
-    import sys
-    if sys.platform.startswith('linux'):
-        try:
-            x11 = ctypes.cdll.LoadLibrary('libX11.so')
-            x11.XInitThreads()
-        except:
-            print("Warning: failed to XInitThreads()")
-
 from PyQt5 import Qt
 from gnuradio import qtgui
-from gnuradio.filter import firdes
-import sip
 from gnuradio import analog
 import math
 from gnuradio import blocks
-import pmt
+from gnuradio import blocks, gr
 from gnuradio import digital
 from gnuradio import filter
+from gnuradio.filter import firdes
 from gnuradio import gr
 from gnuradio.fft import window
 import sys
 import signal
+from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-from gnuradio import gr, pdu
-import ping_demodulated_epy_block_0_0 as epy_block_0_0  # embedded python block
-import ping_demodulated_epy_block_1 as epy_block_1  # embedded python block
+from gnuradio import soapy
+import csp_rx_epy_block_0_0 as epy_block_0_0  # embedded python block
+import csp_rx_epy_block_0_1 as epy_block_0_1  # embedded python block
+import csp_rx_epy_block_1 as epy_block_1  # embedded python block
+import csp_rx_epy_block_2 as epy_block_2  # embedded python block
+import csp_rx_epy_block_3 as epy_block_3  # embedded python block
 import satellites
 import satellites.components.demodulators
 import satellites.hier
+import sip
 
 
 
-from gnuradio import qtgui
-
-class ping_demodulated(gr.top_block, Qt.QWidget):
+class csp_rx(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -58,8 +49,8 @@ class ping_demodulated(gr.top_block, Qt.QWidget):
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
-        except:
-            pass
+        except BaseException as exc:
+            print(f"Qt GUI: Could not set Icon: {str(exc)}", file=sys.stderr)
         self.top_scroll_layout = Qt.QVBoxLayout()
         self.setLayout(self.top_scroll_layout)
         self.top_scroll = Qt.QScrollArea()
@@ -72,15 +63,15 @@ class ping_demodulated(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "ping_demodulated")
+        self.settings = Qt.QSettings("GNU Radio", "csp_rx")
 
         try:
             if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
                 self.restoreGeometry(self.settings.value("geometry").toByteArray())
             else:
                 self.restoreGeometry(self.settings.value("geometry"))
-        except:
-            pass
+        except BaseException as exc:
+            print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
 
         ##################################################
         # Variables
@@ -90,15 +81,65 @@ class ping_demodulated(gr.top_block, Qt.QWidget):
         ##################################################
         # Blocks
         ##################################################
+
+        self.soapy_hackrf_source_0 = None
+        dev = 'driver=hackrf'
+        stream_args = ''
+        tune_args = ['']
+        settings = ['']
+
+        self.soapy_hackrf_source_0 = soapy.source(dev, "fc32", 1, '',
+                                  stream_args, tune_args, settings)
+        self.soapy_hackrf_source_0.set_sample_rate(0, samp_rate)
+        self.soapy_hackrf_source_0.set_bandwidth(0, 0)
+        self.soapy_hackrf_source_0.set_frequency(0, 437.5e6)
+        self.soapy_hackrf_source_0.set_gain(0, 'AMP', False)
+        self.soapy_hackrf_source_0.set_gain(0, 'LNA', min(max(16, 0.0), 40.0))
+        self.soapy_hackrf_source_0.set_gain(0, 'VGA', min(max(30, 0.0), 62.0))
         self.satellites_sync_to_pdu_0 = satellites.hier.sync_to_pdu(
-            packlen=255*2,
+            packlen=700,
             sync="0101010101010101010101010111111010101010",
             threshold=0,
         )
         self.satellites_fsk_demodulator_1 = satellites.components.demodulators.fsk_demodulator(baudrate = 4800, samp_rate = samp_rate/100, iq = False, subaudio = False, options="")
         self.satellites_decode_rs_ccsds_0 = satellites.decode_rs(False, 1)
+        self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
+            1024, #size
+            window.WIN_BLACKMAN_hARRIS, #wintype
+            0, #fc
+            samp_rate, #bw
+            "", #name
+            1, #number of inputs
+            None # parent
+        )
+        self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
+        self.qtgui_waterfall_sink_x_0.enable_grid(False)
+        self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
+
+
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        colors = [0, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(1):
+            if len(labels[i]) == 0:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_waterfall_sink_x_0.set_color_map(i, colors[i])
+            self.qtgui_waterfall_sink_x_0.set_line_alpha(i, alphas[i])
+
+        self.qtgui_waterfall_sink_x_0.set_intensity_range(-140, 10)
+
+        self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.qwidget(), Qt.QWidget)
+
+        self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
         self.qtgui_time_sink_x_1 = qtgui.time_sink_f(
-            1024*10, #size
+            (1024*10), #size
             80e3, #samp_rate
             "", #name
             2, #number of inputs
@@ -145,56 +186,46 @@ class ping_demodulated(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_1_win = sip.wrapinstance(self.qtgui_time_sink_x_1.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_1_win)
-        self.pdu_tagged_stream_to_pdu_0 = pdu.tagged_stream_to_pdu(gr.types.byte_t, 'packet_len')
-        self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.freq_xlating_fir_filter_xxx_0 = filter.freq_xlating_fir_filter_ccc(100, firdes.complex_band_pass(1, samp_rate, -30e3, 30e3, 5e3), -371.2e3, samp_rate)
+        self.freq_xlating_fir_filter_xxx_0 = filter.freq_xlating_fir_filter_ccc(100, firdes.complex_band_pass(1, samp_rate, -30e3, 30e3, 5e3), (-500e3), samp_rate)
+        self.epy_block_3 = epy_block_3.blk()
+        self.epy_block_2 = epy_block_2.blk()
         self.epy_block_1 = epy_block_1.msg_block()
+        self.epy_block_0_1 = epy_block_0_1.blk()
         self.epy_block_0_0 = epy_block_0_0.msg_block()
         self.digital_binary_slicer_fb_1 = digital.binary_slicer_fb()
-        self.digital_additive_scrambler_bb_0 = digital.additive_scrambler_bb(0xa9, 0xff, 7, count=0, bits_per_byte=1, reset_tag_key='packet_len')
         self.blocks_uchar_to_float_1 = blocks.uchar_to_float()
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
-        self.blocks_tag_gate_0 = blocks.tag_gate(gr.sizeof_char * 1, False)
-        self.blocks_tag_gate_0.set_single_key("")
-        self.blocks_stream_to_tagged_stream_0 = blocks.stream_to_tagged_stream(gr.sizeof_char, 1, 42, "packet_len")
-        self.blocks_pack_k_bits_bb_0 = blocks.pack_k_bits_bb(8)
-        self.blocks_message_debug_1 = blocks.message_debug(True)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/thomas/Documents/GNURadio_recordings/gqrx_20230130_120914_437371200_8000000_fc_corespondance_ground_DISCO-I.raw', False, 0, 0)
-        self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
-        self.analog_simple_squelch_cc_0 = analog.simple_squelch_cc(-50, 1)
+        self.blocks_message_debug_1 = blocks.message_debug(True, gr.log_levels.info)
+        self.blocks_message_debug_0 = blocks.message_debug(True, gr.log_levels.info)
+        self.analog_simple_squelch_cc_0 = analog.simple_squelch_cc((-50), 1)
         self.analog_quadrature_demod_cf_0 = analog.quadrature_demod_cf(5)
-        self.analog_agc_xx_0 = analog.agc_cc(1e-4, 1.0, 1)
-        self.analog_agc_xx_0.set_max_gain(65536)
+        self.analog_agc_xx_0 = analog.agc_cc((1e-4), 1.0, 1, 65536)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
+        self.msg_connect((self.epy_block_0_0, 'pdu_out'), (self.epy_block_0_1, 'PDU_in'))
+        self.msg_connect((self.epy_block_0_1, 'PDU_out'), (self.epy_block_2, 'PDU_in'))
         self.msg_connect((self.epy_block_1, 'msg_out'), (self.epy_block_0_0, 'msg_in'))
-        self.msg_connect((self.pdu_tagged_stream_to_pdu_0, 'pdus'), (self.satellites_decode_rs_ccsds_0, 'in'))
+        self.msg_connect((self.epy_block_2, 'PDU_out'), (self.blocks_message_debug_0, 'print'))
+        self.msg_connect((self.epy_block_2, 'PDU_out'), (self.satellites_decode_rs_ccsds_0, 'in'))
         self.msg_connect((self.satellites_decode_rs_ccsds_0, 'out'), (self.blocks_message_debug_1, 'print'))
         self.msg_connect((self.satellites_sync_to_pdu_0, 'out'), (self.epy_block_1, 'msg_in'))
         self.connect((self.analog_agc_xx_0, 0), (self.analog_quadrature_demod_cf_0, 0))
         self.connect((self.analog_quadrature_demod_cf_0, 0), (self.satellites_fsk_demodulator_1, 0))
         self.connect((self.analog_simple_squelch_cc_0, 0), (self.analog_agc_xx_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.blocks_throttle_0, 0))
-        self.connect((self.blocks_pack_k_bits_bb_0, 0), (self.blocks_stream_to_tagged_stream_0, 0))
-        self.connect((self.blocks_stream_to_tagged_stream_0, 0), (self.pdu_tagged_stream_to_pdu_0, 0))
-        self.connect((self.blocks_tag_gate_0, 0), (self.blocks_pack_k_bits_bb_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.freq_xlating_fir_filter_xxx_0, 0))
         self.connect((self.blocks_uchar_to_float_1, 0), (self.qtgui_time_sink_x_1, 1))
-        self.connect((self.digital_additive_scrambler_bb_0, 0), (self.blocks_tag_gate_0, 0))
         self.connect((self.digital_binary_slicer_fb_1, 0), (self.blocks_uchar_to_float_1, 0))
         self.connect((self.digital_binary_slicer_fb_1, 0), (self.satellites_sync_to_pdu_0, 0))
         self.connect((self.freq_xlating_fir_filter_xxx_0, 0), (self.analog_simple_squelch_cc_0, 0))
-        self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.digital_additive_scrambler_bb_0, 0))
         self.connect((self.satellites_fsk_demodulator_1, 0), (self.digital_binary_slicer_fb_1, 0))
         self.connect((self.satellites_fsk_demodulator_1, 0), (self.qtgui_time_sink_x_1, 0))
+        self.connect((self.soapy_hackrf_source_0, 0), (self.freq_xlating_fir_filter_xxx_0, 0))
+        self.connect((self.soapy_hackrf_source_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "ping_demodulated")
+        self.settings = Qt.QSettings("GNU Radio", "csp_rx")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -206,13 +237,14 @@ class ping_demodulated(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
         self.freq_xlating_fir_filter_xxx_0.set_taps(firdes.complex_band_pass(1, self.samp_rate, -30e3, 30e3, 5e3))
+        self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.soapy_hackrf_source_0.set_sample_rate(0, self.samp_rate)
 
 
 
 
-def main(top_block_cls=ping_demodulated, options=None):
+def main(top_block_cls=csp_rx, options=None):
 
     if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
         style = gr.prefs().get_string('qtgui', 'style', 'raster')
