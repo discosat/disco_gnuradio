@@ -97,7 +97,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1016, 632.0]
+    coordinate: [1048, 552.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -150,7 +150,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1232, 628.0]
+    coordinate: [1224, 548.0]
     rotation: 0
     state: enabled
 - name: blocks_message_strobe_0
