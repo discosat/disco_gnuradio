@@ -81,20 +81,41 @@ class csp_rx(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
-        self.soapy_hackrf_source_0 = None
-        dev = 'driver=hackrf'
+        self.soapy_rtlsdr_source_0 = None
+        dev = 'driver=rtlsdr'
         stream_args = ''
         tune_args = ['']
         settings = ['']
 
-        self.soapy_hackrf_source_0 = soapy.source(dev, "fc32", 1, '',
+        def _set_soapy_rtlsdr_source_0_gain_mode(channel, agc):
+            self.soapy_rtlsdr_source_0.set_gain_mode(channel, agc)
+            if not agc:
+                  self.soapy_rtlsdr_source_0.set_gain(channel, self._soapy_rtlsdr_source_0_gain_value)
+        self.set_soapy_rtlsdr_source_0_gain_mode = _set_soapy_rtlsdr_source_0_gain_mode
+
+        def _set_soapy_rtlsdr_source_0_gain(channel, name, gain):
+            self._soapy_rtlsdr_source_0_gain_value = gain
+            if not self.soapy_rtlsdr_source_0.get_gain_mode(channel):
+                self.soapy_rtlsdr_source_0.set_gain(channel, gain)
+        self.set_soapy_rtlsdr_source_0_gain = _set_soapy_rtlsdr_source_0_gain
+
+        def _set_soapy_rtlsdr_source_0_bias(bias):
+            if 'biastee' in self._soapy_rtlsdr_source_0_setting_keys:
+                self.soapy_rtlsdr_source_0.write_setting('biastee', bias)
+        self.set_soapy_rtlsdr_source_0_bias = _set_soapy_rtlsdr_source_0_bias
+
+        self.soapy_rtlsdr_source_0 = soapy.source(dev, "fc32", 1, '',
                                   stream_args, tune_args, settings)
-        self.soapy_hackrf_source_0.set_sample_rate(0, samp_rate)
-        self.soapy_hackrf_source_0.set_bandwidth(0, 0)
-        self.soapy_hackrf_source_0.set_frequency(0, 437.5e6)
-        self.soapy_hackrf_source_0.set_gain(0, 'AMP', False)
-        self.soapy_hackrf_source_0.set_gain(0, 'LNA', min(max(16, 0.0), 40.0))
-        self.soapy_hackrf_source_0.set_gain(0, 'VGA', min(max(30, 0.0), 62.0))
+
+        self._soapy_rtlsdr_source_0_setting_keys = [a.key for a in self.soapy_rtlsdr_source_0.get_setting_info()]
+
+        self.soapy_rtlsdr_source_0.set_sample_rate(0, 3.2e6)
+        self.soapy_rtlsdr_source_0.set_frequency(0, 437.5e6)
+        self.soapy_rtlsdr_source_0.set_frequency_correction(0, 0)
+        self.set_soapy_rtlsdr_source_0_bias(bool(False))
+        self._soapy_rtlsdr_source_0_gain_value = 20
+        self.set_soapy_rtlsdr_source_0_gain_mode(0, bool(False))
+        self.set_soapy_rtlsdr_source_0_gain(0, 'TUNER', 20)
         self.satellites_sync_to_pdu_0 = satellites.hier.sync_to_pdu(
             packlen=700,
             sync="0101010101010101010101010111111010101010",
@@ -185,7 +206,7 @@ class csp_rx(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_1_win = sip.wrapinstance(self.qtgui_time_sink_x_1.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_1_win)
-        self.freq_xlating_fir_filter_xxx_0 = filter.freq_xlating_fir_filter_ccc(100, firdes.complex_band_pass(1, samp_rate, -30e3, 30e3, 5e3), (-500e3), samp_rate)
+        self.freq_xlating_fir_filter_xxx_0_0 = filter.freq_xlating_fir_filter_ccc(40, firdes.complex_band_pass(1, samp_rate, -30e3, 30e3, 5e3), (-500e3), 3.2e6)
         self.epy_block_2 = epy_block_2.blk()
         self.epy_block_1 = epy_block_1.msg_block()
         self.epy_block_0_1 = epy_block_0_1.blk()
@@ -213,11 +234,11 @@ class csp_rx(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_uchar_to_float_1, 0), (self.qtgui_time_sink_x_1, 1))
         self.connect((self.digital_binary_slicer_fb_1, 0), (self.blocks_uchar_to_float_1, 0))
         self.connect((self.digital_binary_slicer_fb_1, 0), (self.satellites_sync_to_pdu_0, 0))
-        self.connect((self.freq_xlating_fir_filter_xxx_0, 0), (self.analog_simple_squelch_cc_0, 0))
+        self.connect((self.freq_xlating_fir_filter_xxx_0_0, 0), (self.analog_simple_squelch_cc_0, 0))
         self.connect((self.satellites_fsk_demodulator_1, 0), (self.digital_binary_slicer_fb_1, 0))
         self.connect((self.satellites_fsk_demodulator_1, 0), (self.qtgui_time_sink_x_1, 0))
-        self.connect((self.soapy_hackrf_source_0, 0), (self.freq_xlating_fir_filter_xxx_0, 0))
-        self.connect((self.soapy_hackrf_source_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
+        self.connect((self.soapy_rtlsdr_source_0, 0), (self.freq_xlating_fir_filter_xxx_0_0, 0))
+        self.connect((self.soapy_rtlsdr_source_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
 
 
     def closeEvent(self, event):
@@ -233,9 +254,8 @@ class csp_rx(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.freq_xlating_fir_filter_xxx_0.set_taps(firdes.complex_band_pass(1, self.samp_rate, -30e3, 30e3, 5e3))
+        self.freq_xlating_fir_filter_xxx_0_0.set_taps(firdes.complex_band_pass(1, self.samp_rate, -30e3, 30e3, 5e3))
         self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.soapy_hackrf_source_0.set_sample_rate(0, self.samp_rate)
 
 
 
