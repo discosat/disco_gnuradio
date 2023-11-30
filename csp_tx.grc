@@ -33,6 +33,18 @@ options:
     state: enabled
 
 blocks:
+- name: freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 437e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 4.0]
+    rotation: 0
+    state: true
 - name: samp_rate
   id: variable
   parameters:
@@ -47,6 +59,23 @@ blocks:
     coordinate: [176, 4.0]
     rotation: 0
     state: enabled
+- name: analog_const_source_x_0
+  id: analog_const_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: freq
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 796.0]
+    rotation: 0
+    state: true
 - name: blocks_burst_tagger_0
   id: blocks_burst_tagger
   parameters:
@@ -163,14 +192,14 @@ blocks:
     minoutbuf: '0'
     msg: pmt.cons(pmt.make_dict(), pmt.init_u8vector(10,(0x80, 0x81, 0x02, 0xc8, 0x15,
       0x41, 0x00, 0x00, 0x00, 0x00)))
-    period: '5000'
+    period: '3000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [144, 100.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_message_strobe_0_0
   id: blocks_message_strobe
   parameters:
@@ -187,7 +216,7 @@ blocks:
     bus_structure: null
     coordinate: [144, 188.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_stream_to_tagged_stream_0
   id: blocks_stream_to_tagged_stream
   parameters:
@@ -508,6 +537,38 @@ blocks:
     coordinate: [728, 160.0]
     rotation: 0
     state: enabled
+- name: gpredict_MsgPairToVar_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 740.0]
+    rotation: 0
+    state: true
+- name: gpredict_doppler_0
+  id: gpredict_doppler
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gpredict_host: 0.0.0.0
+    gpredict_port: '4532'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [136, 744.0]
+    rotation: 0
+    state: true
 - name: osmosdr_sink_0
   id: osmosdr_sink
   parameters:
@@ -786,6 +847,69 @@ blocks:
     coordinate: [880, 300.0]
     rotation: 0
     state: true
+- name: qtgui_number_sink_0
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [680, 772.0]
+    rotation: 0
+    state: true
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -1035,6 +1159,7 @@ blocks:
     state: true
 
 connections:
+- [analog_const_source_x_0, '0', qtgui_number_sink_0, '0']
 - [blocks_burst_tagger_0, '0', osmosdr_sink_0, '0']
 - [blocks_burst_tagger_0, '0', soapy_hackrf_sink_0, '0']
 - [blocks_char_to_float_0, '0', qtgui_time_sink_x_0, '0']
@@ -1052,6 +1177,7 @@ connections:
 - [epy_block_2, PDU_out, pdu_pdu_to_tagged_stream_1, pdus]
 - [epy_block_2_0, PDU_out, virtual_sink_1, '0']
 - [epy_block_3, PDU_out, epy_block_0_1, PDU_in]
+- [gpredict_doppler_0, freq, gpredict_MsgPairToVar_0, inpair]
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_char_to_float_0, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_file_sink_1, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', digital_gfsk_mod_0, '0']

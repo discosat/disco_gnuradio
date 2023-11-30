@@ -10,6 +10,7 @@ Right now, the TX flowgraph transmits a CSP ping every five seconds, which can b
 GNU Radio 3.10.x
 
 gr-satellites, url: https://github.com/daniestevez/gr-satellites (just pull the main branch)
+gr-predict-doppler, url: https://github.com/ghostop14/gr-gpredict-doppler (for Doppler correction on TX - just disable the block if not needed)
 
 Note: most of the custom blocks are embedded python blocks, which means that no other out-of-tree modules (OOT) are nessescary. The source code for each block can be viewed and modified by opening the block in GRC.
 
