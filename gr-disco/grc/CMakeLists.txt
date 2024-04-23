@@ -7,5 +7,7 @@
 #
 
 install(FILES
-    disco_ZMQ_sink.block.yml DESTINATION share/gnuradio/grc/blocks
+    disco_ZMQ_sink.block.yml 
+    disco_ZMQ_source.block.yml
+    DESTINATION share/gnuradio/grc/blocks
 )

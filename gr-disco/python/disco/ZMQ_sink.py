@@ -16,7 +16,7 @@ class ZMQ_sink(gr.basic_block):
     """
     docstring for block ZMQ_sink
     """
-    def __init__(self):
+    def __init__(self, connection_str):
         gr.basic_block.__init__(self,
             name="ZMQ_sink",
             in_sig=None,
@@ -28,7 +28,7 @@ class ZMQ_sink(gr.basic_block):
         #Set up ZMQ publisher
         context = zmq.Context()
         self.publisher = context.socket(zmq.PUB)
-        self.publisher.bind("tcp://127.0.0.1:7000")
+        self.publisher.bind(connection_str)
 
 
     def handle_msg(self, msg):

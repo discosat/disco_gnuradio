@@ -1,10 +1,10 @@
-id: disco_ZMQ_sink
-label: ZMQ_sink
+id: disco_ZMQ_source
+label: ZMQ_source
 category: '[disco]'
 
 templates:
   imports: from gnuradio import disco
-  make: disco.ZMQ_sink(${connection_str})
+  make: disco.ZMQ_source(${connection_str})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -16,7 +16,7 @@ parameters:
 - id: connection_str
   label: Connection String
   dtype: string
-  default: 'tcp://127.0.0.1:7000'
+  default: 'tcp://127.0.0.1:6000'
 
 #- id: ...
 #  label: ...
@@ -30,13 +30,13 @@ parameters:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-- label: PDU_in
-  domain: message
 #  dtype: ...
 #  vlen: ...
 #  optional: ...
 
 outputs:
+- label: PDU_out
+  domain: message
 #- label: ...
 #  domain: ...
 #  dtype: ...
