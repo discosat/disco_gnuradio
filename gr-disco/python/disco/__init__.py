@@ -21,4 +21,5 @@ except ModuleNotFoundError:
 
 # import any pure python here
 from .ZMQ_sink import ZMQ_sink
+from .ZMQ_source import ZMQ_source
 #

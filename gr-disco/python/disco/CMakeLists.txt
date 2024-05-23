@@ -22,7 +22,9 @@ add_subdirectory(bindings)
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    ZMQ_sink.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/disco
+    ZMQ_sink.py 
+    ZMQ_source.py
+    DESTINATION ${GR_PYTHON_DIR}/gnuradio/disco
 )
 
 ########################################################################
