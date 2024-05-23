@@ -25,9 +25,12 @@ from PyQt5 import Qt
 from gnuradio import qtgui
 from gnuradio.filter import firdes
 import sip
+from gnuradio import analog
+from gnuradio import blocks
 from gnuradio import digital
 from gnuradio import disco
 from gnuradio import fec
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio.fft import window
 import sys
@@ -36,6 +39,8 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import gr, pdu
+import satellites.components.deframers
+import satellites.components.demodulators
 
 
 
@@ -77,15 +82,64 @@ class sbandtx(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 20e6
-        self.baudrate = baudrate = 19531
+        self.samp_rate = samp_rate = 5e5
+        self.baudrate = baudrate = 10000
         self.sps = sps = int(samp_rate / baudrate)
+        self.freq = freq = 2200000
         self.excess_bw = excess_bw = 0.35
+        self.enc = enc = fec.cc_encoder_make(259*8,7, 2, [79,-109], 0, fec.CC_STREAMING, False)
+        self.dec = dec = fec.cc_decoder.make(80,7, 2, [79,-109], 0, -1, fec.CC_STREAMING, False)
         self.cons = cons = digital.constellation_bpsk().base()
 
         ##################################################
         # Blocks
         ##################################################
+        self.satellites_ccsds_rs_deframer_1_0 = satellites.components.deframers.ccsds_rs_deframer(frame_size = 223, precoding = "differential", rs_en = True, rs_basis = "dual", rs_interleaving = 1, scrambler = "CCSDS", syncword_threshold = 0, options="")
+        self.satellites_ccsds_rs_deframer_1 = satellites.components.deframers.ccsds_rs_deframer(frame_size = 223, precoding = "differential", rs_en = True, rs_basis = "dual", rs_interleaving = 1, scrambler = "CCSDS", syncword_threshold = 0, options="")
+        self.satellites_bpsk_demodulator_0 = satellites.components.demodulators.bpsk_demodulator(baudrate = baudrate, samp_rate = samp_rate, f_offset = 0, differential = False, manchester = False, iq = True, options="")
+        self.root_raised_cosine_filter_0 = filter.fir_filter_ccf(
+            1,
+            firdes.root_raised_cosine(
+                1,
+                samp_rate,
+                baudrate,
+                0.35,
+                511))
+        self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
+            1024, #size
+            window.WIN_BLACKMAN_hARRIS, #wintype
+            0, #fc
+            samp_rate, #bw
+            "", #name
+            1, #number of inputs
+            None # parent
+        )
+        self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
+        self.qtgui_waterfall_sink_x_0.enable_grid(False)
+        self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
+
+
+
+        labels = ['', '', '', '', '',
+                  '', '', '', '', '']
+        colors = [0, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+                  1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(1):
+            if len(labels[i]) == 0:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_waterfall_sink_x_0.set_color_map(i, colors[i])
+            self.qtgui_waterfall_sink_x_0.set_line_alpha(i, alphas[i])
+
+        self.qtgui_waterfall_sink_x_0.set_intensity_range(-140, 10)
+
+        self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.qwidget(), Qt.QWidget)
+
+        self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
         self.qtgui_time_sink_x_2 = qtgui.time_sink_c(
             1024, #size
             samp_rate, #samp_rate
@@ -180,7 +234,7 @@ class sbandtx(gr.top_block, Qt.QWidget):
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
         self.qtgui_const_sink_x_0 = qtgui.const_sink_c(
-            1024, #size
+            1024*10, #size
             "", #name
             1, #number of inputs
             None # parent
@@ -221,30 +275,54 @@ class sbandtx(gr.top_block, Qt.QWidget):
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
         self.pdu_pdu_to_tagged_stream_0 = pdu.pdu_to_tagged_stream(gr.types.byte_t, 'packet_len')
-        self.fec_encode_ccsds_27_bb_0 = fec.encode_ccsds_27_bb()
+        self.fec_generic_encoder_0 = fec.encoder(enc, gr.sizeof_char, gr.sizeof_char)
+        self.fec_extended_decoder_0_0 = fec.extended_decoder(decoder_obj_list=dec, threading= None, ann=None, puncpat='11', integration_period=10000)
+        self.fec_extended_decoder_0 = fec.extended_decoder(decoder_obj_list=dec, threading= None, ann=None, puncpat='11', integration_period=10000)
         self.disco_ZMQ_source_0 = disco.ZMQ_source('tcp://127.0.0.1:6666')
+        self.disco_ZMQ_sink_0 = disco.ZMQ_sink('tcp://127.0.0.1:7777')
         self.digital_diff_encoder_bb_0 = digital.diff_encoder_bb(2, digital.DIFF_DIFFERENTIAL)
-        self.digital_constellation_modulator_0 = digital.generic_mod(
-            constellation=cons,
-            differential=False,
-            samples_per_symbol=sps,
-            pre_diff_code=True,
-            excess_bw=excess_bw,
-            verbose=False,
-            log=False,
-            truncate=False)
+        self.digital_chunks_to_symbols_xx_0 = digital.chunks_to_symbols_bc((-1, 1), 1)
+        self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
+        self.blocks_repeat_0 = blocks.repeat(gr.sizeof_gr_complex*1, sps)
+        self.blocks_packed_to_unpacked_xx_0 = blocks.packed_to_unpacked_bb(1, gr.GR_MSB_FIRST)
+        self.blocks_message_debug_1 = blocks.message_debug(True)
+        self.blocks_delay_0 = blocks.delay(gr.sizeof_float*1, 1)
+        self.blocks_char_to_float_1 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_0 = blocks.char_to_float(1, 1)
+        self.blocks_add_const_vxx_0_0 = blocks.add_const_ff(-0.5)
+        self.blocks_add_const_vxx_0 = blocks.add_const_ff(-0.5)
+        self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0, 0)
 
 
         ##################################################
         # Connections
         ##################################################
         self.msg_connect((self.disco_ZMQ_source_0, 'PDU_out'), (self.pdu_pdu_to_tagged_stream_0, 'pdus'))
-        self.connect((self.digital_constellation_modulator_0, 0), (self.qtgui_const_sink_x_0, 0))
-        self.connect((self.digital_constellation_modulator_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.digital_constellation_modulator_0, 0), (self.qtgui_time_sink_x_2, 0))
-        self.connect((self.digital_diff_encoder_bb_0, 0), (self.fec_encode_ccsds_27_bb_0, 0))
-        self.connect((self.fec_encode_ccsds_27_bb_0, 0), (self.digital_constellation_modulator_0, 0))
-        self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.digital_diff_encoder_bb_0, 0))
+        self.msg_connect((self.satellites_ccsds_rs_deframer_1, 'out'), (self.blocks_message_debug_1, 'print'))
+        self.msg_connect((self.satellites_ccsds_rs_deframer_1, 'out'), (self.disco_ZMQ_sink_0, 'PDU_in'))
+        self.msg_connect((self.satellites_ccsds_rs_deframer_1_0, 'out'), (self.blocks_message_debug_1, 'print'))
+        self.msg_connect((self.satellites_ccsds_rs_deframer_1_0, 'out'), (self.disco_ZMQ_sink_0, 'PDU_in'))
+        self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_const_sink_x_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_time_sink_x_2, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
+        self.connect((self.blocks_add_const_vxx_0, 0), (self.satellites_ccsds_rs_deframer_1, 0))
+        self.connect((self.blocks_add_const_vxx_0_0, 0), (self.satellites_ccsds_rs_deframer_1_0, 0))
+        self.connect((self.blocks_char_to_float_0, 0), (self.blocks_add_const_vxx_0_0, 0))
+        self.connect((self.blocks_char_to_float_1, 0), (self.blocks_add_const_vxx_0, 0))
+        self.connect((self.blocks_delay_0, 0), (self.fec_extended_decoder_0, 0))
+        self.connect((self.blocks_packed_to_unpacked_xx_0, 0), (self.digital_diff_encoder_bb_0, 0))
+        self.connect((self.blocks_repeat_0, 0), (self.root_raised_cosine_filter_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0), (self.satellites_bpsk_demodulator_0, 0))
+        self.connect((self.digital_chunks_to_symbols_xx_0, 0), (self.blocks_repeat_0, 0))
+        self.connect((self.digital_diff_encoder_bb_0, 0), (self.fec_generic_encoder_0, 0))
+        self.connect((self.fec_extended_decoder_0, 0), (self.blocks_char_to_float_0, 0))
+        self.connect((self.fec_extended_decoder_0_0, 0), (self.blocks_char_to_float_1, 0))
+        self.connect((self.fec_generic_encoder_0, 0), (self.digital_chunks_to_symbols_xx_0, 0))
+        self.connect((self.pdu_pdu_to_tagged_stream_0, 0), (self.blocks_packed_to_unpacked_xx_0, 0))
+        self.connect((self.root_raised_cosine_filter_0, 0), (self.blocks_throttle_0_0, 0))
+        self.connect((self.satellites_bpsk_demodulator_0, 0), (self.blocks_delay_0, 0))
+        self.connect((self.satellites_bpsk_demodulator_0, 0), (self.fec_extended_decoder_0_0, 0))
 
 
     def closeEvent(self, event):
@@ -261,8 +339,12 @@ class sbandtx(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.set_sps(int(self.samp_rate / self.baudrate))
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+        self.blocks_throttle_0_0.set_sample_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_2.set_samp_rate(self.samp_rate)
+        self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.samp_rate, self.baudrate, 0.35, 511))
 
     def get_baudrate(self):
         return self.baudrate
@@ -270,18 +352,38 @@ class sbandtx(gr.top_block, Qt.QWidget):
     def set_baudrate(self, baudrate):
         self.baudrate = baudrate
         self.set_sps(int(self.samp_rate / self.baudrate))
+        self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.samp_rate, self.baudrate, 0.35, 511))
 
     def get_sps(self):
         return self.sps
 
     def set_sps(self, sps):
         self.sps = sps
+        self.blocks_repeat_0.set_interpolation(self.sps)
+
+    def get_freq(self):
+        return self.freq
+
+    def set_freq(self, freq):
+        self.freq = freq
 
     def get_excess_bw(self):
         return self.excess_bw
 
     def set_excess_bw(self, excess_bw):
         self.excess_bw = excess_bw
+
+    def get_enc(self):
+        return self.enc
+
+    def set_enc(self, enc):
+        self.enc = enc
+
+    def get_dec(self):
+        return self.dec
+
+    def set_dec(self, dec):
+        self.dec = dec
 
     def get_cons(self):
         return self.cons
