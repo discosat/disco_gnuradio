@@ -107,12 +107,12 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/thomas/Documents/GNURadio_recordings/gqrx_20230130_120914_437371200_8000000_fc_corespondance_ground_DISCO-I.raw
+    file: /home/ed/Downloads/gqrx_20230130_120914_437371200_8000000_fc_corespondance_ground_DISCO-I.raw
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
-    repeat: 'False'
+    repeat: 'True'
     type: complex
     vlen: '1'
   states:
@@ -121,7 +121,7 @@ blocks:
     bus_structure: null
     coordinate: [40, 124.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_message_debug_1
   id: blocks_message_debug
   parameters:
@@ -129,12 +129,11 @@ blocks:
     alias: ''
     comment: ''
     en_uvec: 'True'
-    log_level: info
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1560, 952.0]
+    coordinate: [1528, 984.0]
     rotation: 0
     state: true
 - name: blocks_throttle_0
@@ -155,7 +154,7 @@ blocks:
     bus_structure: null
     coordinate: [288, 156.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_uchar_to_float_1
   id: blocks_uchar_to_float
   parameters:
@@ -186,6 +185,20 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [368, 672.0]
+    rotation: 0
+    state: true
+- name: disco_ZMQ_sink_0
+  id: disco_ZMQ_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    connection_str: tcp://127.0.0.1:7000
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1504, 916.0]
     rotation: 0
     state: true
 - name: epy_block_0_0
@@ -398,7 +411,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    center_freq: -500e3
+    center_freq: -371e3
     comment: 'Decimate and translate to 437 MHz
 
       for HackRF'
@@ -594,7 +607,7 @@ blocks:
     bus_structure: null
     coordinate: [544, 140.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: satellites_decode_rs_ccsds_0
   id: satellites_decode_rs_ccsds
   parameters:
@@ -675,14 +688,13 @@ blocks:
     bus_structure: null
     coordinate: [248, 244.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: soapy_rtlsdr_source_0
   id: soapy_rtlsdr_source
   parameters:
     affinity: ''
     agc: 'False'
     alias: ''
-    bias: 'False'
     center_freq: 437.5e6
     comment: "NOTE: RX Sink  center frequency \nshould be kept at 437.5 MHz\nThe flowgraph\
       \ will isolate the signal at 437 MHz\nautomatically. (avoids RX DC offset)"
@@ -769,6 +781,7 @@ connections:
 - [freq_xlating_fir_filter_xxx_0, '0', analog_simple_squelch_cc_0, '0']
 - [freq_xlating_fir_filter_xxx_0_0, '0', analog_simple_squelch_cc_0, '0']
 - [satellites_decode_rs_ccsds_0, out, blocks_message_debug_1, print]
+- [satellites_decode_rs_ccsds_0, out, disco_ZMQ_sink_0, PDU_in]
 - [satellites_fsk_demodulator_1, '0', digital_binary_slicer_fb_1, '0']
 - [satellites_fsk_demodulator_1, '0', qtgui_time_sink_x_1, '0']
 - [satellites_sync_to_pdu_0, out, virtual_sink_1, '0']
@@ -781,4 +794,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.7.0

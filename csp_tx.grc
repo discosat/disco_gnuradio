@@ -199,7 +199,7 @@ blocks:
     bus_structure: null
     coordinate: [144, 100.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_strobe_0_0
   id: blocks_message_strobe
   parameters:
@@ -299,6 +299,22 @@ blocks:
     coordinate: [1360, 348.0]
     rotation: 0
     state: enabled
+- name: disco_ZMQ_source_0
+  id: disco_ZMQ_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    connection_str: tcp://127.0.0.1:6000
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [144, 252.0]
+    rotation: 0
+    state: true
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -1172,6 +1188,7 @@ connections:
 - [digital_burst_shaper_xx_0, '0', blocks_burst_tagger_0, '0']
 - [digital_burst_shaper_xx_0, '0', blocks_complex_to_mag_0, '0']
 - [digital_gfsk_mod_0, '0', virtual_sink_0, '0']
+- [disco_ZMQ_source_0, PDU_out, satellites_encode_rs_ccsds_0, in]
 - [epy_block_0, PDU_out, epy_block_2, PDU_in]
 - [epy_block_0_1, PDU_out, epy_block_2_0, PDU_in]
 - [epy_block_2, PDU_out, pdu_pdu_to_tagged_stream_1, pdus]
